@@ -20,7 +20,7 @@ function secondsToMinutesSeconds(seconds) {
 async function getSongs(folder) {
     currFolder = folder;
 
-    let a = await fetch(`http://127.0.0.1:5500/${folder}`);
+    let a = await fetch(`songs/${folder}`);
     let response = await a.text();
     // console.log(response);
     let div = document.createElement("div");
@@ -76,7 +76,7 @@ const playMusic = (track, pause = false) => {
 
 
 async function displayAlbums() {
-    let a = await fetch(`http://127.0.0.1:5500/songs/`);
+    let a = await fetch(`songs/`);
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -95,7 +95,7 @@ async function displayAlbums() {
             //console.log(folder)
 
             //get the meta data of this file
-            let j = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`);
+            let j = await fetch(`songs/${folder}/info.json`);
             let metaData = await j.json();
             //console.log(metaData)                     
 
@@ -133,12 +133,12 @@ async function displayAlbums() {
 
             songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`);
 
-            console.log("folder songs", songs);
+            //console.log("folder songs", songs);
             playMusic(songs[0], true) // Selectes the first song of selected album doesnt play it to play it by default remove true
 
             // Show the total songs
             let totalSongs = songs.length;
-            console.log("Total songs", totalSongs);
+            //console.log("Total songs", totalSongs);
 
             currLibrary = e.getElementsByTagName("h3")[0].innerHTML;
             let heading = document.querySelector(".heading");
@@ -258,7 +258,7 @@ async function main() {
     document.querySelector(".range").getElementsByTagName("input")[0].addEventListener("change", (e) => {
         //console.log(e.target.value);
         currentSong.volume = Number(e.target.value) / 100; // Set the volume of the song
-        console.log(currentSong.volume);
+        //console.log(currentSong.volume);
         if (currentSong.volume == 0) {
             document.querySelector(".volume").getElementsByTagName("img")[0].src = "img/mute.svg";
         } else {
@@ -270,7 +270,7 @@ async function main() {
 
     // Add an event listener to volume button to mute
     document.querySelector(".volume>img").addEventListener("click", (e) => {
-        console.log(e.target);
+       // console.log(e.target);
         if (currentSong.volume > 0) {
             e.target.src = "img/mute.svg"
             currentSong.volume = 0;
@@ -318,7 +318,7 @@ async function main() {
         } else if (e.key === "ArrowRight") {
             currentSong.currentTime = Math.min(currentSong.currentTime + 5, currentSong.duration);
         }
-        console.log(currentSong.volume);
+        //console.log(currentSong.volume);
 
     });
 
